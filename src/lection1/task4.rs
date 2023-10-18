@@ -7,7 +7,7 @@ pub fn add_digits(num: i32) -> i32 {
         res += x_copied % base;
         x_copied /= base;
     }
-    if res > 10{
+    if res > 9{
         res = add_digits(res);
     }
     return res;
@@ -15,5 +15,5 @@ pub fn add_digits(num: i32) -> i32 {
 
 #[test]
 fn sort_test() {
-	assert_eq!(2 + 2, 4);
+	assert_eq!(add_digits(19), 1);
 }
