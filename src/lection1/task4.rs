@@ -14,6 +14,6 @@ pub fn add_digits(num: i32) -> i32 {
 }
 
 #[test]
-fn sort_test() {
+fn add_digits_test() {
 	assert_eq!(add_digits(19), 1);
 }

@@ -7,7 +7,7 @@ pub fn is_power_of_two(n: i32) -> bool {
 }
 
 #[test]
-fn sort_test() {
+fn is_power_of_two_test() {
 	assert_eq!(is_power_of_two(0), false);
 	assert_eq!(is_power_of_two(1), true);
 	assert_eq!(is_power_of_two(2), true);

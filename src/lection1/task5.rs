@@ -13,7 +13,6 @@ pub fn is_palindrome(x: i32) -> bool {
         let leftmost = v[v.len() - i - 1];
         println!("left {}  right {}", leftmost, rightmost);
         if rightmost != leftmost {
-            //println!("Nope");
             return false;
         }
     }
@@ -21,6 +20,6 @@ pub fn is_palindrome(x: i32) -> bool {
 }
 
 #[test]
-fn sort_test() {
+fn is_palindrome_test() {
 	assert_eq!(2 + 2, 4);
 }

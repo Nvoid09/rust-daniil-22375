@@ -13,6 +13,6 @@ pub fn reverse_bits(x: u32) -> u32 {
 }    
     
 #[test]
-fn sort_test() {
+fn reverse_bits_test() {
 	assert_eq!(2 + 2, 4);
 }
