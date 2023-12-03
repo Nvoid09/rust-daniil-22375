@@ -9,13 +9,6 @@ struct TreeNode<T> {
    right: BinaryTree<T>,
 }
 
-// use std::cmp::Ordering;
-
-// impl Ord for BinaryTree<T> {
-//    fn cmp(&self, other: &Self) -> Ordering {
-//          self.height.cmp(&other.height)
-//    }
-// }
 
 impl<T: Ord + Copy + std::fmt::Display> BinaryTree<T> {
    pub fn add(&mut self, value : T) {
@@ -32,7 +25,6 @@ impl<T: Ord + Copy + std::fmt::Display> BinaryTree<T> {
             }
          }
       }
-      //Box::new(value);
    }
    
    pub fn print(&self) {
@@ -60,8 +52,4 @@ impl<T: Ord + Copy + std::fmt::Display> BinaryTree<T> {
       }
    }
 }
-
-// #[test]
-// pub fn test_1(){
-// }
 
