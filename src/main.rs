@@ -12,4 +12,10 @@ fn main() {
     lection3::lec3_check();
     //println!("==========Check Lection 5==========");
     //lection5::lec5_check();
+    println!("==========Check workability==========");
+    // let mut x = 1;
+    // let mut y = 2;
+    // println!(" x {} y {}", x,y);
+    // (x,y) = (y,x);
+    // println!("after\n x {} y {}", x,y);
 }
