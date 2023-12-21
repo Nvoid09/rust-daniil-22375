@@ -1,18 +1,20 @@
-//use super::rectangle;
 #[derive(Default, Debug)]
-pub struct Rectangle<T> {
+pub struct Rectangle<T> 
+{
     x: T,
     y: T,
     width: T,
     height: T
 }
 
-pub struct Point<T> {
+pub struct Point<T> 
+{
     x: T,
     y: T,
 }
 
-trait Rect<T> : Default {
+trait Rect<T> : Default 
+{
     fn new(x: T, y : T, width: T, height: T) -> Self;
     
     fn adjust(&mut self, dx1: T, dy1: T, dx2: T, dy2: T);
@@ -39,8 +41,8 @@ trait Rect<T> : Default {
     fn contains_rect(&self, point: &Rectangle<T>) -> bool;
 
     fn is_intersected(&self, rect: &Rectangle<T>) -> bool;
-    // fn intersected(&self, rect: &Rectangle<T>) -> Rectangle<T>;
-    // fn united(&self, rect: &Rectangle<T>) -> Rectangle<T>;
+    fn intersected(&self, rect: &Rectangle<T>) -> Rectangle<T>;
+    fn united(&self, rect: &Rectangle<T>) -> Rectangle<T>;
 
     fn transposed(&self) -> Rectangle<T>;
 }
@@ -150,15 +152,48 @@ where
         if self.contains_point(&rect.bottom_left()) ||
             self.contains_point(&rect.bottom_right()) ||
             self.contains_point(&rect.top_left()) ||
-            self.contains_point(&rect.top_right())
+            self.contains_point(&rect.top_right()) || 
+            rect.contains_point(&self.bottom_left())
+            //если вдруг все точки self лежат внутри rect, достаточно проверить 1 точку
         {
             return true;
         }
         return false;
     }
     
-    // fn intersected(&self, rect: &Rectangle<T>) -> Rectangle<T>;
-    // fn united(&self, rect: &Rectangle<T>) -> Rectangle<T>;
+    fn intersected(&self, rect: &Rectangle<T>) -> Rectangle<T> {
+        if !self.is_intersected(rect) {
+            return Self::new(T::from(0),T::from(0),T::from(0),T::from(0));
+        }
+
+        let x_ = if self.x > rect.x { self.x } else { rect.x };
+        let y_ = if self.y > rect.y { self.y } else { rect.y };
+        let rx1 = self.right();
+        let rx2 = rect.right();
+        let rx = if rx1 < rx2 { rx1 } else { rx2 };
+        let ty1 = self.top();
+        let ty2 = rect.top();
+        let ty = if ty1 < ty2 { ty1 } else { ty2 };
+        let w_ = rx - x_;
+        let h_ = ty - y_;
+
+        return Self::new(x_, y_, w_, h_);
+    }
+
+    fn united(&self, rect: &Rectangle<T>) -> Rectangle<T> {
+        let x_ = if self.x < rect.x { self.x } else { rect.x };
+        let y_ = if self.y < rect.y { self.y } else { rect.y };
+        let rx1 = self.right();
+        let rx2 = rect.right();
+        let rx = if rx1 > rx2 { rx1 } else { rx2 };
+        let ty1 = self.top();
+        let ty2 = rect.top();
+        let ty = if ty1 > ty2 { ty1 } else { ty2 };
+        let w_ = rx - x_;
+        let h_ = ty - y_;
+
+        return Self::new(x_, y_, w_, h_);
+    }
 
     fn transposed(&self) -> Rectangle<T>    { 
         Rectangle 
@@ -170,10 +205,75 @@ where
         } 
     }
 }
-// trait std::ops::BitAnd{}
-// trait std::ops::BitAndAssign
+
+impl <T> std::ops::BitAnd for Rectangle<T> 
+where
+    T:Default,
+    T:Copy,
+    T:std::ops::Add<Output=T>,
+    T:std::ops::Sub<Output=T>,
+    T:std::ops::Div<Output=T>,
+    T:std::ops::Mul<Output=T>,
+    T:std::cmp::PartialOrd,
+    T:From<i32>
+{
+    type Output = Rectangle<T>;
+    fn bitand(self, rhs: Rectangle<T>) -> Self::Output {
+        self.intersected(&rhs)
+    }
+}
+
+impl <T> std::ops::BitAndAssign for Rectangle<T> 
+where
+    T:Default,
+    T:Copy,
+    T:std::ops::Add<Output=T>,
+    T:std::ops::Sub<Output=T>,
+    T:std::ops::Div<Output=T>,
+    T:std::ops::Mul<Output=T>,
+    T:std::cmp::PartialOrd,
+    T:From<i32>
+{
+    fn bitand_assign(self: &mut Rectangle<T>, rhs: Rectangle<T>){
+        let tmp_rect = self.intersected(&rhs);
+        (self.x, self.y, self.width, self.height) = (tmp_rect.x, tmp_rect.y, tmp_rect.width, tmp_rect.height);
+    }
+}
+
 // trait std::ops::BitOr
-// trait std::ops::BitOrAssign
+impl <T> std::ops::BitOr for Rectangle<T> 
+where
+    T:Default,
+    T:Copy,
+    T:std::ops::Add<Output=T>,
+    T:std::ops::Sub<Output=T>,
+    T:std::ops::Div<Output=T>,
+    T:std::ops::Mul<Output=T>,
+    T:std::cmp::PartialOrd,
+    T:From<i32>
+{
+    type Output = Rectangle<T>;
+    fn bitor(self, rhs: Rectangle<T>) -> Self::Output {
+        self.united(&rhs)
+    }
+}
+
+impl <T> std::ops::BitOrAssign for Rectangle<T> 
+where
+    T:Default,
+    T:Copy,
+    T:std::ops::Add<Output=T>,
+    T:std::ops::Sub<Output=T>,
+    T:std::ops::Div<Output=T>,
+    T:std::ops::Mul<Output=T>,
+    T:std::cmp::PartialOrd,
+    T:From<i32>
+{
+    fn bitor_assign(self: &mut Rectangle<T>, rhs: Rectangle<T>){
+        let tmp_rect = self.united(&rhs);
+        (self.x, self.y, self.width, self.height) = (tmp_rect.x, tmp_rect.y, tmp_rect.width, tmp_rect.height);
+    }
+}
 
 #[test]
 fn test(){
