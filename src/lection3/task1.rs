@@ -1,12 +1,13 @@
-pub enum BinaryTree<T> {
+#[derive(PartialEq, Debug)]
+pub enum BinaryTree<T> {//==option
    Empty,
    NonEmpty(Box<TreeNode<T>>)
 }
-
-struct TreeNode<T> {
-   element: T,
-   left: BinaryTree<T>,
-   right: BinaryTree<T>,
+#[derive(Debug)]
+pub struct TreeNode<T> {//==tree
+   pub element: T,
+   pub left: BinaryTree<T>,
+   pub right: BinaryTree<T>,
 }
 
 
